@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 
 export default function MainPage() {
   return (
@@ -7,28 +8,31 @@ export default function MainPage() {
 
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-bold sm:text-5xl">
-            Ticket Submission Portal
+            Welcome to HelpDesk
           </h1>
           <p className="mt-6 text-xl text-gray-600">
-            Your gateway to professional client support
+            The best and most effective client support
           </p>
         </div>
 
         <section className="w-full mt-24 text-center bg-primary text-white py-32">
-          <h2 className="text-3xl font-semibold">Welcome to TicketsPro</h2>
+          <h2 className="text-3xl font-semibold">Discover our services</h2>
           <p className="mt-6 text-lg text-gray-200">
             Experience a seamless ticketing process with our state-of-the-art
             platform. We provide solutions that cater to your every need. Get
             started today and elevate your support system to new heights.
           </p>
           <div className="mt-10 flex justify-center">
-            <a
-              href="#services"
-              className="bg-white text-primary font-semibold py-3 px-10 rounded hover:bg-emerald-800 focus:outline-none"
-              rel="noreferrer"
-            >
-              Explore Services
-            </a>
+          <div className="w-fit h-fit bg-white rounded overflow-visible">
+  <a
+    href="#services"
+    className="text-primary bg-white px-3 py-1 md:px-4 md:py-1.5 lg:px-8 lg:py-2.5 text-xs md:text-sm font-semibold lg:font-bold flex gap-3 items-center transition-all hover:translate-x-0.5 hover:-translate-y-0.5 whitespace-nowrap cursor-pointer border rounded border-white hover:border-l-primary hover:border-b-primary"
+    rel="noreferrer"
+  >
+    Explore Services
+  </a>
+</div>
+
           </div>
         </section>
 
@@ -209,9 +213,12 @@ export default function MainPage() {
           <p className="mt-6 text-lg text-gray-600">
             Submit a ticket and our team will get back to you shortly.
           </p>
-          <button className="mt-10 bg-primary text-white font-semibold py-3 px-10 rounded hover:bg-emerald-800 focus:outline-none">
+          <div className="mt-10">
+            
+          <Link to='/ticket' className=" bg-primary text-white font-semibold py-3 px-10 rounded hover:bg-emerald-800 focus:outline-none">
             Submit a Ticket
-          </button>
+          </Link>
+          </div>
         </section>
       </div>
 

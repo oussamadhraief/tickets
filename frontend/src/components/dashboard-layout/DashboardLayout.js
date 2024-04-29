@@ -20,7 +20,11 @@ export default function DashboardLayout() {
     }
 
     const getTickets = () => {
-      axios.get("/api/tickets").then((res) => {
+      axios.get("/api/tickets", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }).then((res) => {
         {
           setTickets(res.data.tickets);
         }
@@ -60,14 +64,6 @@ export default function DashboardLayout() {
                 >
                   <IoTicketOutline size={18} /> Submitted Tickets
                 </Link>
-                <a
-                  href="#"
-                  className={`${
-                    isOpen ? "opacity-100" : "opacity-0"
-                  } transition-all flex items-center gap-2 font-bold text-sm py-2.5 px-4 rounded duration-200 text-primary hover:bg-emerald-800 hover:text-white whitespace-nowrap`}
-                >
-                  Profile
-                </a>
                 <Link
                   to="/dashboard/settings"
                   className={`${

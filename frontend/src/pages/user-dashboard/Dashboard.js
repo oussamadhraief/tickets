@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
+import { useUser } from "../../contexts/UserContext";
 
 ChartJS.register(
   CategoryScale,
@@ -43,6 +44,8 @@ export const options = {
 };
 
 export default function Dashboard() {
+  const { user } = useUser();
+
   const [chartData, setChartData] = useState([]);
   const [totalTicketsCount, setTotalTicketsCount] = useState(0);
   const [pendingTicketsCount, setPendingTicketsCount] = useState(0);
@@ -63,11 +66,31 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get("/api/tickets/stats"),
-      axios.get("/api/tickets/total"),
-      axios.get("/api/tickets/pending"),
-      axios.get("/api/tickets/inprogress"),
-      axios.get("/api/tickets/resolved")
+      axios.get("/api/tickets/stats", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+      axios.get("/api/tickets/total", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+      axios.get("/api/tickets/pending", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+      axios.get("/api/tickets/inprogress", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+      axios.get("/api/tickets/resolved", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
   ]).then(response => {
         const counts = Array(30).fill(0);
 
@@ -132,9 +155,9 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
-        <div className=" lg:min-w-[505px] max-w-full lg:max-w-[700px] aspect-[6/3] lg:aspect-video flex-grow flex-1 shadow bg-white rounded-2xl h-fit lg:min-h-[400px] md:p-4 hidden sm:flex items-center justify-center ">
+        {user?.role == 'admin' && <div className=" lg:min-w-[505px] max-w-full lg:max-w-[700px] aspect-[6/3] lg:aspect-video flex-grow flex-1 shadow bg-white rounded-2xl h-fit lg:min-h-[400px] md:p-4 hidden sm:flex items-center justify-center ">
           <Line options={options} data={data} />
-        </div>
+        </div>}
     </div>
   );
 }

@@ -3,8 +3,6 @@ import axios from "axios";
 
 export default function CreateTicket() {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
     type: "",
     subject: "",
     message: "",
@@ -15,22 +13,22 @@ export default function CreateTicket() {
   };
 
   const handleSubmit = (e) => {
-    
     e.preventDefault();
     const token = localStorage.getItem("token");
     axios
-      .post("/api/tickets", 
-      {
-        ...form,
-        status: "pending"
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      .post(
+        "/api/tickets",
+        {
+          ...form,
+          status: "Pending",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      })
-      .then(() =>
-        setForm({ name: "", email: "", type: "", subject: "", message: "" })
-      );
+      )
+      .then(() => setForm({ type: "", subject: "", message: "" }));
   };
 
   return (
@@ -46,63 +44,35 @@ export default function CreateTicket() {
         </div>
         <div className="lg:w-1/2 md:w-2/3 mx-auto">
           <form className="flex flex-wrap -m-2" onSubmit={handleSubmit}>
-            <div className="p-2 w-1/2">
-              <div className="relative">
-                <label htmlFor="name" className="leading-7 text-sm text-gray-600">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  onChange={handleChange}
-                  id="name"
-                  name="name"
-                  value={form.name}
-                  className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-            </div>
-            <div className="p-2 w-1/2">
-              <div className="relative">
-                <label htmlFor="email" className="leading-7 text-sm text-gray-600">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  onChange={handleChange}
-                  id="email"
-                  name="email"
-                  value={form.email}
-                  className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-emerald-500 focus:bg-white focus:ring-1 focus:ring-emerald-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                />
-              </div>
-            </div>
-
             <div className="p-2 w-full">
-                <label htmlFor="type" className="leading-7 text-sm text-gray-600">
-                  Ticket type
-                </label>
-                <select
-                  id="type"
-                  name="type"
-                  className="bg-gray-50 border border-gray-300 ring-gray-300 text-gray-700 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 outline-none block w-full p-2.5"
-                  value={form.type}
-                  onChange={handleChange}
+              <label htmlFor="type" className="leading-7 text-sm text-gray-600">
+                Ticket type
+              </label>
+              <select
+                id="type"
+                name="type"
+                className="bg-gray-50 border border-gray-300 ring-gray-300 text-gray-700 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 outline-none block w-full p-2.5"
+                value={form.type}
+                onChange={handleChange}
+              >
+                <option value="">Select an option</option>
+                <option value="billing">Billing</option>
+                <option value="damaged">Damaged product(s)</option>
+                <option value="missing">Missing items</option>
+                <option value="late">Order not yet received</option>
+                <option value="wrong">Received wrong order/items</option>
+                <option value="credentials">Forgot credentials</option>
+                <option value="login">Unable to connect to account</option>
+                <option value="register">Unable to create account</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="p-2 w-full">
+              <div className="relative">
+                <label
+                  htmlFor="subject"
+                  className="leading-7 text-sm text-gray-600"
                 >
-                  <option value="">Select an option</option>
-                  <option value="billing">Billing</option>
-                  <option value="damaged">Damaged product(s)</option>
-                  <option value="missing">Missing items</option>
-                  <option value="late">Order not yet received</option>
-                  <option value="wrong">Received wrong order/items</option>
-                  <option value="credentials">Forgot credentials</option>
-                  <option value="login">Unable to connect to account</option>
-                  <option value="register">Unable to create account</option>
-                  <option value="other">Other</option>
-                </select>
-            </div>
-            <div className="p-2 w-full">
-              <div className="relative">
-                <label htmlFor="subject" className="leading-7 text-sm text-gray-600">
                   Subject
                 </label>
                 <input
@@ -117,7 +87,10 @@ export default function CreateTicket() {
             </div>
             <div className="p-2 w-full">
               <div className="relative">
-                <label htmlFor="message" className="leading-7 text-sm text-gray-600">
+                <label
+                  htmlFor="message"
+                  className="leading-7 text-sm text-gray-600"
+                >
                   Message
                 </label>
                 <textarea

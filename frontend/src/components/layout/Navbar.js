@@ -29,11 +29,11 @@ export default function Navbar() {
           </div>
         </div>
         <div className="hidden md:flex items-center space-x-3 text-primary font-bold text-sm">
-          <a href="/" className="py-5 px-3" rel="noreferrer">
+          <Link to="/" className="py-5 px-3" rel="noreferrer">
             Home
-          </a>
-          <Link to="/ticket" className="py-5 px-3">
-            Help
+          </Link>
+          <Link to={user ? "/ticket" : 'login'} className="py-5 px-3">
+            Create
           </Link>
           {/* <a href="#" className="py-5 px-3 text-lg" rel="noreferrer"><LuUser /></a> */}
           {user ? (

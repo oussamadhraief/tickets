@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -9,6 +9,7 @@ import { FaCheck } from "react-icons/fa6";
 import Comment from "../../components/Comment";
 
 export default function SingleTicket() {
+  const navigate = useNavigate()
   const { id } = useParams();
 
   const [ticket, setTicket] = useState({
@@ -59,7 +60,7 @@ export default function SingleTicket() {
     axios
       .post(
         `/api/comments/${id}`,
-        { content: comment, status: ticket.status },
+        { content: comment, status: ticket.status, submitter: ticket.user._id },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,6 +72,33 @@ export default function SingleTicket() {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handleStatusChange = () => {
+    const newStatus = ticket.status === "Pending" ? "In progress" : "Resolved";
+    axios
+      .put(`/api/tickets/status/${ticket._id}`, { status: newStatus })
+      .then((res) => {
+        setTicket(prev => {
+          return { 
+          ...prev, 
+          status: newStatus 
+        }});
+      })
+      .catch((error) => {
+        console.error("Error updating status:", error);
+      });
+  };
+
+  const handleDeleteTicket = () => {
+    axios
+      .delete(`/api/tickets/${ticket._id}`, )
+      .then((res) => {
+        navigate('/dashboard/tickets')
+      })
+      .catch((error) => {
+        console.error("Error deleting ticket:", error);
       });
   };
 
@@ -97,10 +125,15 @@ export default function SingleTicket() {
             <h1 className="text-lg font-bold">Ticket Ref: {ticket._id}</h1>
             <div className="relative flex items-center gap-2">
               <p
-                className={`text-xs font-bold rounded-full px-3 py-1 ${
-                  ticket.status === "pending"
-                    ? "text-yellow-500 bg-yellow-200/80"
-                    : "text-emerald-500 bg-emerald-200/80"
+                className={`inline-flex text-xs leading-5 font-bold rounded-full px-2 py-0.5 ${
+                  ticket.status === "Resolved" &&
+                  "text-green-500 bg-green-500/20"
+                } ${
+                  ticket.status === "In progress" &&
+                  "text-sky-500 bg-sky-500/20"
+                } ${
+                  ticket.status === "Pending" &&
+                  "text-yellow-500 bg-yellow-500/20"
                 }`}
               >
                 {ticket.status}
@@ -117,14 +150,18 @@ export default function SingleTicket() {
                   tabIndex={0}
                   className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                 >
+                  {!(ticket.status == "Resolved") && (
+                    <li>
+                      <button onClick={() => handleStatusChange()}>
+                        Set status to&nbsp;
+                        {ticket.status === "Pending"
+                          ? "In progress"
+                          : "Resolved"}
+                      </button>
+                    </li>
+                  )}
                   <li>
-                    <Link to="/dashboard">
-                      Set status to{" "}
-                      {ticket.status === "pending" ? "solved" : "pending"}
-                    </Link>
-                  </li>
-                  <li>
-                    <button>Delete</button>
+                    <button onClick={handleDeleteTicket}>Delete</button>
                   </li>
                 </ul>
               </div>
@@ -153,8 +190,8 @@ export default function SingleTicket() {
                     <img src="/image.png" alt="" />
                   </div>
                   <div className="text-sm">
-                    <h2 className="font-bold">{ticket.name}</h2>
-                    <p>{ticket.email}</p>
+                    <h2 className="font-bold">{ticket.user?.name}</h2>
+                    <p>{ticket.user?.email}</p>
                   </div>
                 </div>
                 <div className="text-sm whitespace-nowrap">
@@ -170,7 +207,7 @@ export default function SingleTicket() {
                         {ticket?.user?.username}
                       </p>
                       <p className="overflow-hidden text-ellipsis">
-                        {ticket.email}
+                        {ticket.user?.email}
                       </p>
                       {ticket?.user?.phone && (
                         <p className="overflow-hidden text-ellipsis">

@@ -55,7 +55,7 @@ export const UserProvider = ({ children }) => {
   }, []); // No dependencies for initial setup
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (

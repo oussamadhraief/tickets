@@ -15,7 +15,11 @@ export default function TicketsSearch() {
     const fetchSearchResults = async () => {
       try {
         axios
-          .get(`/api/tickets/search?query=${query}`)
+          .get(`/api/tickets/search?query=${query}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
           .then((response) => {
             setTickets(response.data.tickets);
           })

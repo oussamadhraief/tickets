@@ -1,28 +1,54 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/UserModel");
+const { transportmail } = require("../utils/email");
 
 const register = async (req, res) => {
-  const emailExists = await User.findOne({ email: req.body.email });
-  if (emailExists) return res.status(400).send("Email already exists")
-
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-  const user = new User({
-    name: req.body.name,
-    username: req.body.username,
-    email: req.body.email,
-    password: hashedPassword,
-  });
-
   try {
-    const savedUser = await user.save();
-    res.send({ user: user._id });
+    const emailExists = await User.findOne({ email: req.body.email });
+    console.log(emailExists);
+    if (emailExists) return res.status(400).send("Email already exists");
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
+    const user = new User({
+      name: req.body.name,
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+
+    await user.save();
+
+    const mailContent = {
+      from: 'oussema.dhraief@gmail.com',
+      to: req.body.email,
+      subject: 'Welcome to HelpDesk',
+      text: `Dear ${req.body.name},
+
+Thank you for registering to HelpDesk, your account has been successfully created !
+
+Best regards,
+HelpDesk Team`,
+    };
+
+    transportmail.sendMail(mailContent, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ message: 'Error sending email' });
+      } else {
+        console.log('Email sent:', info.response);
+        res.status(200).json({ message: 'Email sent successfully', user: user._id });
+      }
+    });
+
   } catch (err) {
+    console.error('Error registering user:', err);
     res.status(400).send(err);
   }
 };
+
 
 const login = async (req, res) => {
   const { error } = req.body;
@@ -33,8 +59,8 @@ const login = async (req, res) => {
 
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(400).send("Email or password is wrong");
-
-  const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+  
+  const token = jwt.sign({ _id: user._id, role: user.role }, process.env.TOKEN_SECRET);
   res.header("auth-token", token).send(token);
 };
 
