@@ -60,7 +60,7 @@ const login = async (req, res) => {
   const validPass = await bcrypt.compare(req.body.password, user.password);
   if (!validPass) return res.status(400).send("Email or password is wrong");
   
-  const token = jwt.sign({ _id: user._id, role: user.role }, process.env.TOKEN_SECRET);
+  const token = jwt.sign({ _id: user._id, role: user.role }, "62e891a75bed4051b8c2cc1b459706f7f1117d60076e9d0145e8726052ff5955");
   res.header("auth-token", token).send(token);
 };
 

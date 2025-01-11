@@ -8,12 +8,12 @@ const commentRoutes = require('./routes/CommentRoutes');
 const authRoutes = require('./routes/AuthRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect("mongodb+srv://oussamadhraief:b7jpHdoak7GIejm6@helpdesk.xjkm5ij.mongodb.net/")
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error(err));
 
