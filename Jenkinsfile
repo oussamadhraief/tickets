@@ -4,7 +4,7 @@ pipeline {
         pollSCM('H/5 * * * *')  // Poll SCM every 5 minutes
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub')  // Correct credential reference
+        DOCKERHUB_CREDENTIALS = credentials('jenkins')  // Correct credential reference
         IMAGE_NAME_SERVER = 'oussamadhraief/tickets-backend'  // Corrected image name format
         IMAGE_NAME_CLIENT = 'oussamadhraief/tickets-frontend'  // Corrected image name format
     }
