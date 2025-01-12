@@ -60,7 +60,7 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/register"
-                className="py-2 px-5 bg-primary rounded-md text-white"
+                className="py-2 px-5 bg-yellow-500 rounded-md text-white"
               >
                 Register
               </Link>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { api_base_url } from "../../config"
 
 import { IoEyeOutline } from "react-icons/io5";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -12,7 +13,7 @@ export default function Tickets() {
 
   useEffect(() => {
     const getTickets = () => {
-      axios.get("/api/tickets", {
+      axios.get(`${api_base_url}/api/tickets`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

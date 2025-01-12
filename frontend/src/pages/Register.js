@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { api_base_url } from "../config"
 
 export default function Register() {
 
@@ -17,7 +18,7 @@ export default function Register() {
     const { firstName, lastName, username, email, password } = form;
 
     axios
-      .post("/api/auth/register", { name : `${firstName} ${lastName}`, username, email, password })
+      .post(`${api_base_url}/api/auth/register`, { name : `${firstName} ${lastName}`, username, email, password })
       .then((response) => {
         navigate("/login");
       })

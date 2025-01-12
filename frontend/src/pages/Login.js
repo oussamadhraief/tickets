@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { api_base_url } from "../config"
 
 export default function Login() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Login() {
     const { email, password } = form;
 
     axios
-      .post("/api/auth/login", { email, password })
+      .post(`${api_base_url}/api/auth/login`, { email, password })
       .then((response) => {
         localStorage.setItem("token", response.data);
         navigate("/");

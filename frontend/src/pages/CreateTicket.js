@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { api_base_url } from "../config"
 
 export default function CreateTicket() {
   const [form, setForm] = useState({
@@ -17,7 +18,7 @@ export default function CreateTicket() {
     const token = localStorage.getItem("token");
     axios
       .post(
-        "/api/tickets",
+        `${api_base_url}/api/tickets`,
         {
           ...form,
           status: "Pending",

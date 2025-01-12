@@ -6,6 +6,7 @@ import { IoTicketOutline } from "react-icons/io5";
 import axios from "axios";
 import DashboardNavbar from "./DashboardNavbar";
 import { CiSettings } from "react-icons/ci";
+import { api_base_url } from "../../config"
 
 export default function DashboardLayout() {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ export default function DashboardLayout() {
     }
 
     const getTickets = () => {
-      axios.get("/api/tickets", {
+      axios.get(`${api_base_url}/api/tickets`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

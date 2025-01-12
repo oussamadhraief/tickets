@@ -12,6 +12,7 @@ import {
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import { useUser } from "../../contexts/UserContext";
+import { api_base_url } from "../../config"
 
 ChartJS.register(
   CategoryScale,
@@ -66,27 +67,27 @@ export default function Dashboard() {
 
   useEffect(() => {
     Promise.all([
-      axios.get("/api/tickets/stats", {
+      axios.get(`${api_base_url}/api/tickets/stats`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
-      axios.get("/api/tickets/total", {
+      axios.get(`${api_base_url}/api/tickets/total`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
-      axios.get("/api/tickets/pending", {
+      axios.get(`${api_base_url}/api/tickets/pending`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
-      axios.get("/api/tickets/inprogress", {
+      axios.get(`${api_base_url}/api/tickets/inprogress`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
-      axios.get("/api/tickets/resolved", {
+      axios.get(`${api_base_url}/api/tickets/resolved`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

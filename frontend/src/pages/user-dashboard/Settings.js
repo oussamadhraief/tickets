@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../contexts/UserContext";
 import axios from "axios";
-
+import { api_base_url } from "../../config"
 export default function Settings() {
   const { user } = useUser();
 
@@ -51,7 +51,7 @@ export default function Settings() {
     const token = localStorage.getItem("token");
 
     axios
-      .patch("/api/auth/user", form, {
+      .patch(`${api_base_url}/api/auth/user`, form, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +65,7 @@ export default function Settings() {
     const token = localStorage.getItem("token");
 
     axios
-      .patch("/api/auth/user/security", passwordForm, {
+      .patch(`${api_base_url}/api/auth/user/security`, passwordForm, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
